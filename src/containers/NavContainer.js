@@ -28,6 +28,9 @@ class NavContainer extends Component {
             <NavItem>
               <Link to="/child">Children</Link>
             </NavItem>
+            <NavItem>
+              <Link to="/account">My Account</Link>
+            </NavItem>
           </Nav>
         </Collapse>
       </Navbar>

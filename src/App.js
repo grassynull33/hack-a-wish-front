@@ -7,6 +7,7 @@ import NoMatch from './components/NoMatch';
 import NavContainer from './containers/NavContainer';
 import ChildrenContainer from './containers/ChildrenContainer';
 import ChildContainer from './containers/ChildContainer';
+import MyAccountContainer from './containers/MyAccountContainer';
 
 class App extends Component {
   render() {
@@ -22,6 +23,8 @@ class App extends Component {
               <Route exact path="/child" component={ChildrenContainer} />
 
               <Route path="/child/:childId" component={ChildContainer} />
+
+              <Route path="/account" component={MyAccountContainer} />
 
               <Route component={NoMatch} />
             </Switch>
