@@ -22,3 +22,59 @@ h6 {
   bottom: 0;
   width: 100%;
 }
+
+.my-account-container {
+  h6 {
+    text-align: center;
+  }
+
+  .date {
+    text-align: center;
+    color: #444;
+  }
+
+  .transaction-row {
+    display: flex;
+    align-items: center;
+
+    // height: 50px;
+
+    // border-bottom: 1px solid #ccc;
+
+    img {
+      width: 30px;
+      margin: 5px;
+    }
+
+    .transaction-purchase {
+      min-width: 100px;
+    }
+
+    .transaction-date {
+      flex: 1;
+    }
+
+    .transaction-amount {
+      min-width: 100px;
+      text-align: right;
+      // color: green;
+      // font-weight: bold;
+    }
+
+    .transaction-donation {
+      min-width: 100px;
+      text-align: right;
+      // color: green;
+      // font-weight: bold;
+    }
+
+    &.transaction-header {
+      color: rgb(131, 131, 131);
+
+      .transaction-donation {
+        // color: green;
+        font-weight: initial;
+      }
+    }
+  }
+}
