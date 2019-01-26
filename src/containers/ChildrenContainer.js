@@ -197,7 +197,12 @@ class ChildrenContainer extends Component {
                         <Button
                           size="sm"
                           color="danger"
-                          onClick={() => this.deleteChild(c._id)}
+                          onClick={e => {
+                            e.preventDefault();
+                            e.stopPropagation();
+
+                            this.deleteChild(c._id);
+                          }}
                         >
                           Delete
                         </Button>
