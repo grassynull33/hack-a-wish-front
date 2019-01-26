@@ -100,6 +100,21 @@ const ChildForm = ({ child, editChild, MALE, FEMALE }) => {
           </FormGroup>
         </Col>
       </Row>
+
+      <Row>
+        <Col>
+          <FormGroup>
+            <Label htmlFor={`child-wish-${child._id}`}>Wish</Label>
+            <Input
+              id={`child-wish-${child._id}`}
+              type="textarea"
+              onChange={e => editChild(child._id, 'wish', e.target.value)}
+              value={child.wish || ''}
+              required
+            />
+          </FormGroup>
+        </Col>
+      </Row>
     </React.Fragment>
   );
 };

@@ -5,6 +5,7 @@ import { SnackbarProvider } from 'notistack';
 
 import NoMatch from './components/NoMatch';
 import NavContainer from './containers/NavContainer';
+import ChildrenContainer from './containers/ChildrenContainer';
 import ChildContainer from './containers/ChildContainer';
 
 class App extends Component {
@@ -18,7 +19,9 @@ class App extends Component {
             <NavContainer />
             <Switch>
               <Route exact path="/" component={null} />
-              <Route path="/child" component={ChildContainer} />
+              <Route exact path="/child" component={ChildrenContainer} />
+
+              <Route path="/child/:childId" component={ChildContainer} />
 
               <Route component={NoMatch} />
             </Switch>

@@ -1,199 +1,118 @@
-/* eslint react/no-danger: 0 */
 import React, { Component } from 'react';
-import uuidv4 from 'uuid/v4';
-import { Container, Row, Col, Button, Form, Table } from 'reactstrap';
-import update from 'immutability-helper';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { withSnackbar } from 'notistack';
-
-import ChildForm from '../components/ChildForm';
-
 import {
-  createChildren,
-  CREATE_CHILDREN_SUCCESS,
-  getChildren,
-  deleteChild,
-  DELETE_CHILD_SUCCESS,
-} from '../actions/child';
+  Container,
+  Row,
+  Col,
+  // Button
+} from 'reactstrap';
 
-import { MALE, FEMALE } from '../utils/constants';
-
-const initChild = () => ({
-  _id: uuidv4(),
-  firstName: '',
-  lastName: '',
-  gender: FEMALE,
-  age: '',
-  condition: '',
-  story: '',
-  // interests: [],
-});
+import { getChildren } from '../actions/child';
+// import { MALE, FEMALE } from '../utils/constants';
 
 class ChildContainer extends Component {
-  state = {
-    children: [initChild()],
-  };
-
-  componentDidMount() {
+  componentWillMount() {
     this.props.getChildren();
   }
 
-  editChild = (_id, key, value) => {
-    const { children } = this.state;
+  // componentWillUpdate(prevProps) {
+  //   if (this.props.match.params.id !== prevProps.match.params.id) {
+  //     this.props.selectBoard();
+  //     this.props.getPlants();
+  //   }
+  // }
 
-    const cIndex = children.findIndex(c => c._id === _id);
+  // componentDidUpdate() {
+  //   const {
+  //     enqueueSnackbar,
+  //     clearError: clearE,
+  //     // clearSuccess: clearS,
+  //   } = this.props;
 
-    if (cIndex === -1) return;
+  //   // const { hasError: prevErrors } = prevProps;
+  //   const {
+  //     hasError: currentErrors,
+  //     // hasSuccess: currentSuccesses,
+  //   } = this.props;
 
-    const newChildren = update(children, {
-      [cIndex]: {
-        [key]: { $set: value },
-      },
-    });
+  //   currentErrors.forEach(e => {
+  //     if (e && e.error && e.error.data) {
+  //       clearE(e.type);
 
-    this.setState({ children: newChildren });
-  };
+  //       enqueueSnackbar(e.error.data, {
+  //         variant: 'warning',
+  //         autoHideDuration: 7777,
+  //       });
+  //     }
+  //   });
 
-  addChildForm = () => {
-    const { children } = this.state;
+  // currentSuccesses.forEach(s => {
+  // console.log(s);
 
-    const newChildren = update(children, {
-      $push: [initChild()],
-    });
+  // if (s) {
+  //   clearS(s.type);
 
-    this.setState({ children: newChildren });
-  };
-
-  deleteChildForm = _id => {
-    const { children } = this.state;
-
-    const cIndex = children.findIndex(c => c._id === _id);
-
-    if (cIndex === -1) return;
-
-    const newChildren = update(children, {
-      $splice: [[cIndex, 1]],
-    });
-
-    this.setState({ children: newChildren });
-  };
-
-  prepareChildren = children => {
-    const childrenCopy = [...children];
-
-    childrenCopy.forEach(c => {
-      delete c._id;
-    });
-
-    return childrenCopy;
-  };
-
-  createChildren = () => {
-    const preparedChildren = this.prepareChildren(this.state.children);
-
-    this.props.createChildren(preparedChildren).then(res => {
-      if (res.type === CREATE_CHILDREN_SUCCESS) {
-        this.setState({ children: [initChild()] });
-
-        this.props.enqueueSnackbar('Children created', {
-          variant: 'success',
-          autoHideDuration: 3000,
-        });
-
-        return this.props.getChildren();
-      }
-    });
-  };
-
-  deleteChild = childId => {
-    const shouldDelete = window.confirm(
-      'Are you sure you want to delete this child?',
-    );
-
-    if (!shouldDelete) return;
-
-    return this.props.deleteChild(childId).then(res => {
-      if (res.type === DELETE_CHILD_SUCCESS) {
-        return this.props.enqueueSnackbar('Child deleted', {
-          variant: 'success',
-          autoHideDuration: 3000,
-        });
-      }
-    });
-  };
+  //   enqueueSnackbar('Operation performed successfully!', {
+  //     variant: 'success',
+  //     autoHideDuration: 7777,
+  //   });
+  // }
+  // });
+  // }
 
   render() {
+    const {
+      match: {
+        params: { childId },
+      },
+      child,
+    } = this.props;
+
+    const cIndex = child.findIndex(c => c._id === childId);
+
+    if (cIndex === -1) return null;
+
+    const selectedChild = child[cIndex];
+
+    const {
+      firstName,
+      lastName,
+      age,
+      condition,
+      // gender,
+      wish,
+      story,
+    } = selectedChild;
+
     return (
-      <Container fluid className="child-container">
+      <Container fluid className="page">
         <Row>
           <Col>
-            <h2>Child Container</h2>
+            <header>
+              <h2>{`${firstName} ${lastName}`}</h2>
+              {/* <div
+                style={{
+                  backgroundColor: `${gender === MALE ? 'skyblue' : 'pink'}`,
+                  borderRadius: '50%',
+                  width: 20,
+                  height: 20,
+                  padding: 10,
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                {gender}
+              </div> */}
+              <span>{age}</span>
+            </header>
 
-            <Form
-              onSubmit={e => {
-                e.preventDefault();
+            <h3>{condition}</h3>
 
-                this.createChildren();
-              }}
-            >
-              <Button type="submit" color="success" size="lg">
-                Create Children
-              </Button>
+            <p>{story}</p>
 
-              {Array.isArray(this.state.children) &&
-                this.state.children.map(c => {
-                  return (
-                    <ChildForm
-                      key={c._id}
-                      child={c}
-                      editChild={this.editChild}
-                      MALE={MALE}
-                      FEMALE={FEMALE}
-                    />
-                  );
-                })}
-            </Form>
-            <Button
-              color="primary"
-              size="lg"
-              onClick={() => this.addChildForm()}
-            >
-              + Add Another Form
-            </Button>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <Table>
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>First Name</th>
-                  <th>Last Name</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {Array.isArray(this.props.child) &&
-                  this.props.child.map((c, i) => (
-                    <tr key={c._id}>
-                      <th scope="row">{i + 1}</th>
-                      <td>{c.firstName}</td>
-                      <td>{c.lastName}</td>
-                      <td>
-                        <Button
-                          size="sm"
-                          color="danger"
-                          onClick={() => this.deleteChild(c._id)}
-                        >
-                          Delete
-                        </Button>
-                      </td>
-                    </tr>
-                  ))}
-              </tbody>
-            </Table>
+            <p>{wish}</p>
           </Col>
         </Row>
       </Container>
@@ -201,17 +120,17 @@ class ChildContainer extends Component {
   }
 }
 
-export default withSnackbar(
-  connect(
-    state => ({ child: state.child.child }),
-    dispatch =>
-      bindActionCreators(
-        {
-          createChildren,
-          getChildren,
-          deleteChild,
-        },
-        dispatch,
-      ),
-  )(ChildContainer),
-);
+const mapStateToProps = state => ({ child: state.child.child });
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      getChildren,
+    },
+    dispatch,
+  );
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ChildContainer);
