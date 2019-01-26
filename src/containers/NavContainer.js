@@ -15,6 +15,9 @@ class NavContainer extends Component {
           <NavItem>
             <Link to="/">Home</Link>
           </NavItem>
+          <NavItem>
+            <Link to="/child">Children</Link>
+          </NavItem>
         </Nav>
       </Navbar>
     );
