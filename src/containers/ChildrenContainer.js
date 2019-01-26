@@ -29,6 +29,9 @@ const initChild = () => ({
   story: '',
   wish: '',
   // interests: [],
+  amountDonatedByUser: 345,
+  amountDonatedByOthers: 1000,
+  amountToCompletion: 4000,
 });
 
 class ChildrenContainer extends Component {

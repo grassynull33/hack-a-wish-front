@@ -5,61 +5,39 @@ import {
   Container,
   Row,
   Col,
-  // Button
+  Button,
+  TabContent,
+  TabPane,
+  Nav,
+  NavItem,
+  NavLink,
+  Progress,
+  Card,
+  CardBody,
+  CardTitle,
 } from 'reactstrap';
+import classnames from 'classnames';
+import commaNumber from 'comma-number';
 
 import { getChildren } from '../actions/child';
 // import { MALE, FEMALE } from '../utils/constants';
 
 class ChildContainer extends Component {
+  state = {
+    activeTab: '1',
+  };
+
   componentWillMount() {
     this.props.getChildren();
   }
 
-  // componentWillUpdate(prevProps) {
-  //   if (this.props.match.params.id !== prevProps.match.params.id) {
-  //     this.props.selectBoard();
-  //     this.props.getPlants();
-  //   }
-  // }
-
-  // componentDidUpdate() {
-  //   const {
-  //     enqueueSnackbar,
-  //     clearError: clearE,
-  //     // clearSuccess: clearS,
-  //   } = this.props;
-
-  //   // const { hasError: prevErrors } = prevProps;
-  //   const {
-  //     hasError: currentErrors,
-  //     // hasSuccess: currentSuccesses,
-  //   } = this.props;
-
-  //   currentErrors.forEach(e => {
-  //     if (e && e.error && e.error.data) {
-  //       clearE(e.type);
-
-  //       enqueueSnackbar(e.error.data, {
-  //         variant: 'warning',
-  //         autoHideDuration: 7777,
-  //       });
-  //     }
-  //   });
-
-  // currentSuccesses.forEach(s => {
-  // console.log(s);
-
-  // if (s) {
-  //   clearS(s.type);
-
-  //   enqueueSnackbar('Operation performed successfully!', {
-  //     variant: 'success',
-  //     autoHideDuration: 7777,
-  //   });
-  // }
-  // });
-  // }
+  toggle = tab => {
+    if (this.state.activeTab !== tab) {
+      this.setState({
+        activeTab: tab,
+      });
+    }
+  };
 
   render() {
     const {
@@ -83,15 +61,69 @@ class ChildContainer extends Component {
       // gender,
       wish,
       story,
+      amountDonatedByUser,
+      amountDonatedByOthers,
+      amountToCompletion,
     } = selectedChild;
 
+    const fullName = `${firstName} ${lastName}`;
+
+    let userContribution;
+    let othersContribution;
+
+    if (amountDonatedByUser && amountDonatedByOthers && amountToCompletion) {
+      const total = amountToCompletion;
+
+      userContribution = (amountDonatedByUser / total) * 100;
+      othersContribution = (amountDonatedByOthers / total) * 100;
+
+      // console.log(userContribution, othersContribution);
+    }
+
     return (
-      <Container fluid className="page">
-        <Row>
-          <Col>
-            <header>
-              <h2>{`${firstName} ${lastName}`}</h2>
-              {/* <div
+      <React.Fragment>
+        <Container fluid className="page">
+          <Nav tabs>
+            <NavItem>
+              <NavLink
+                className={classnames({ active: this.state.activeTab === '1' })}
+                onClick={() => {
+                  this.toggle('1');
+                }}
+              >
+                Profile
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink
+                className={classnames({ active: this.state.activeTab === '2' })}
+                onClick={() => {
+                  this.toggle('2');
+                }}
+              >
+                Updates
+              </NavLink>
+            </NavItem>
+
+            <NavItem>
+              <NavLink
+                className={classnames({ active: this.state.activeTab === '3' })}
+                onClick={() => {
+                  this.toggle('3');
+                }}
+              >
+                Wish
+              </NavLink>
+            </NavItem>
+          </Nav>
+
+          <TabContent activeTab={this.state.activeTab}>
+            <TabPane tabId="1">
+              <Row>
+                <Col>
+                  <header>
+                    <h2>{fullName}</h2>
+                    {/* <div
                 style={{
                   backgroundColor: `${gender === MALE ? 'skyblue' : 'pink'}`,
                   borderRadius: '50%',
@@ -105,17 +137,52 @@ class ChildContainer extends Component {
               >
                 {gender}
               </div> */}
-              <span>{age}</span>
-            </header>
+                    <span>{age}</span>
+                  </header>
 
-            <h3>{condition}</h3>
+                  <h3>{condition}</h3>
 
-            <p>{story}</p>
+                  <p>{story}</p>
 
-            <p>{wish}</p>
-          </Col>
-        </Row>
-      </Container>
+                  <p>{wish}</p>
+                </Col>
+              </Row>
+            </TabPane>
+            <TabPane tabId="2">
+              <Row>
+                <Col>
+                  <Progress multi>
+                    <Progress bar value={`${othersContribution}`} />
+                    <Progress
+                      bar
+                      color="success"
+                      value={`${userContribution}`}
+                    />
+                  </Progress>
+                  {`$${commaNumber(amountToCompletion)}`}
+
+                  <Card>
+                    <CardBody>
+                      <CardTitle>
+                        You've donated {`$${commaNumber(amountDonatedByUser)}`}{' '}
+                        to {fullName}
+                      </CardTitle>
+                    </CardBody>
+                  </Card>
+                </Col>
+              </Row>
+            </TabPane>
+            <TabPane tabId="3">
+              <Row>
+                <Col />
+              </Row>
+            </TabPane>
+          </TabContent>
+        </Container>
+        <Button id="sponsor-btn" color="secondary">
+          Sponsor
+        </Button>
+      </React.Fragment>
     );
   }
 }
