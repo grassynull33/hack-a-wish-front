@@ -1,28 +1,34 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import PropTypes from 'prop-types';
+import { Router, Switch, Route } from 'react-router-dom';
+import { SnackbarProvider } from 'notistack';
+
+import NoMatch from './components/NoMatch';
+import NavContainer from './containers/NavContainer';
 
 class App extends Component {
   render() {
+    const { history } = this.props;
+
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <SnackbarProvider maxSnack={3}>
+        <Router history={history}>
+          <div id="switchWrapper">
+            <NavContainer />
+            <Switch>
+              <Route exact path="/" component={null} />
+
+              <Route component={NoMatch} />
+            </Switch>
+          </div>
+        </Router>
+      </SnackbarProvider>
     );
   }
 }
+
+App.propTypes = {
+  history: PropTypes.object.isRequired,
+};
 
 export default App;
