@@ -24,6 +24,7 @@ const initChild = () => ({
   firstName: '',
   lastName: '',
   gender: FEMALE,
+  age: '',
   condition: '',
   story: '',
   // interests: [],
@@ -59,6 +60,20 @@ class ChildContainer extends Component {
 
     const newChildren = update(children, {
       $push: [initChild()],
+    });
+
+    this.setState({ children: newChildren });
+  };
+
+  deleteChildForm = _id => {
+    const { children } = this.state;
+
+    const cIndex = children.findIndex(c => c._id === _id);
+
+    if (cIndex === -1) return;
+
+    const newChildren = update(children, {
+      $splice: [[cIndex, 1]],
     });
 
     this.setState({ children: newChildren });
@@ -109,8 +124,6 @@ class ChildContainer extends Component {
   };
 
   render() {
-    console.log(this.props.child);
-
     return (
       <Container fluid className="child-container">
         <Row>
@@ -146,7 +159,7 @@ class ChildContainer extends Component {
               size="lg"
               onClick={() => this.addChildForm()}
             >
-              +
+              + Add Another Form
             </Button>
           </Col>
         </Row>

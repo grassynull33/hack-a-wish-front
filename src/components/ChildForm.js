@@ -59,6 +59,20 @@ const ChildForm = ({ child, editChild, MALE, FEMALE }) => {
       <Row>
         <Col>
           <FormGroup>
+            <Label htmlFor={`child-age-${child._id}`}>Age</Label>
+            <Input
+              id={`child-age-${child._id}`}
+              type="number"
+              onChange={e => editChild(child._id, 'age', e.target.value)}
+              value={child.age || ''}
+              required
+              min={0}
+              max={100}
+            />
+          </FormGroup>
+        </Col>
+        <Col>
+          <FormGroup>
             <Label htmlFor={`child-condition-${child._id}`}>
               Medical Condition
             </Label>
