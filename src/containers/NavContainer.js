@@ -2,23 +2,34 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
-import { Navbar, Nav, NavItem } from 'reactstrap';
+import { Navbar, Nav, NavItem, NavbarToggler, Collapse } from 'reactstrap';
 import { withRouter } from 'react-router';
 
 class NavContainer extends Component {
-  state = {};
+  state = {
+    collapsed: true,
+  };
+
+  toggleNavbar = () => {
+    this.setState({
+      collapsed: !this.state.collapsed,
+    });
+  };
 
   render() {
     return (
-      <Navbar color="light" light expand="md">
-        <Nav navbar style={{ flexDirection: 'row' }}>
-          <NavItem>
-            <Link to="/">Home</Link>
-          </NavItem>
-          <NavItem>
-            <Link to="/child">Children</Link>
-          </NavItem>
-        </Nav>
+      <Navbar light color="faded">
+        <NavbarToggler onClick={() => this.toggleNavbar()} className="mr-2" />
+        <Collapse isOpen={!this.state.collapsed} navbar>
+          <Nav navbar>
+            <NavItem>
+              <Link to="/">Home</Link>
+            </NavItem>
+            <NavItem>
+              <Link to="/child">Children</Link>
+            </NavItem>
+          </Nav>
+        </Collapse>
       </Navbar>
     );
   }
