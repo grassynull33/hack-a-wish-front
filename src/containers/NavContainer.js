@@ -18,18 +18,24 @@ class NavContainer extends Component {
 
   render() {
     return (
-      <Navbar light color="faded">
+      <Navbar dark color="faded" className="navbar-main">
         <NavbarToggler onClick={() => this.toggleNavbar()} className="mr-2" />
         <Collapse isOpen={!this.state.collapsed} navbar>
           <Nav navbar>
             <NavItem>
-              <Link to="/">Home</Link>
+              <Link to="/" onClick={() => this.toggleNavbar()}>
+                Home
+              </Link>
             </NavItem>
             <NavItem>
-              <Link to="/child">Children</Link>
+              <Link to="/child" onClick={() => this.toggleNavbar()}>
+                Children
+              </Link>
             </NavItem>
             <NavItem>
-              <Link to="/account">My Account</Link>
+              <Link to="/account" onClick={() => this.toggleNavbar()}>
+                My Account
+              </Link>
             </NavItem>
           </Nav>
         </Collapse>

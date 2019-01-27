@@ -17,6 +17,34 @@ h6 {
   font-family: 'Open Sans', sans-serif;
 }
 
+.navbar-main {
+  background-color: #0057b8;
+
+  .navbar-toggler-icon {
+    color: #fff;
+    border-color: transparent;
+  }
+
+  .navbar-toggler {
+    color: #fff;
+    border-color: transparent;
+  }
+
+  .nav-item {
+    a {
+      padding: 0.5rem 1rem;
+      color: #fff;
+      display: block;
+
+      &:active,
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        text-decoration: none;
+      }
+    }
+  }
+}
+
 #sponsor-btn {
   position: fixed;
   bottom: 0;
