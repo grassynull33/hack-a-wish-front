@@ -28,13 +28,13 @@ class NavContainer extends Component {
               </Link>
             </NavItem>
             <NavItem>
-              <Link to="/child" onClick={() => this.toggleNavbar()}>
-                Children
+              <Link to="/account" onClick={() => this.toggleNavbar()}>
+                My Account
               </Link>
             </NavItem>
             <NavItem>
-              <Link to="/account" onClick={() => this.toggleNavbar()}>
-                My Account
+              <Link to="/admin" onClick={() => this.toggleNavbar()}>
+                Admin
               </Link>
             </NavItem>
           </Nav>

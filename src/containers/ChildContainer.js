@@ -14,10 +14,17 @@ import {
   Progress,
   Card,
   CardBody,
-  CardTitle,
+  Badge,
 } from 'reactstrap';
 import classnames from 'classnames';
 import commaNumber from 'comma-number';
+import {
+  FiArrowLeft,
+  FiStar,
+  FiThumbsUp,
+  FiUserCheck,
+  FiAlertCircle,
+} from 'react-icons/fi';
 
 import { getChildren } from '../actions/child';
 // import { MALE, FEMALE } from '../utils/constants';
@@ -66,7 +73,7 @@ class ChildContainer extends Component {
       amountToCompletion,
     } = selectedChild;
 
-    const fullName = `${firstName} ${lastName}`;
+    // const fullName = `${firstName} ${lastName}`;
 
     let userContribution;
     let othersContribution;
@@ -79,6 +86,8 @@ class ChildContainer extends Component {
 
       // console.log(userContribution, othersContribution);
     }
+
+    const isSponsored = parseFloat(amountDonatedByUser, 10) > 0;
 
     return (
       <React.Fragment>
@@ -121,8 +130,10 @@ class ChildContainer extends Component {
             <TabPane tabId="1">
               <Row>
                 <Col>
-                  <header>
-                    <h2>{fullName}</h2>
+                  <header className="profile-header">
+                    <h2>{firstName}</h2>
+                    <span className="age">{age}</span>
+                    <span className="condition">{condition}</span>
                     {/* <div
                 style={{
                   backgroundColor: `${gender === MALE ? 'skyblue' : 'pink'}`,
@@ -137,51 +148,110 @@ class ChildContainer extends Component {
               >
                 {gender}
               </div> */}
-                    <span>{age}</span>
                   </header>
 
-                  <h3>{condition}</h3>
-
-                  <p>{story}</p>
-
-                  <p>{wish}</p>
+                  <h5 className="story-headline">The Story</h5>
+                  <p className="story">{story}</p>
                 </Col>
               </Row>
             </TabPane>
             <TabPane tabId="2">
               <Row>
                 <Col>
-                  <Progress multi>
-                    <Progress bar value={`${othersContribution}`} />
-                    <Progress
-                      bar
-                      color="success"
-                      value={`${userContribution}`}
-                    />
-                  </Progress>
-                  {`$${commaNumber(amountToCompletion)}`}
+                  {isSponsored ? (
+                    <React.Fragment>
+                      <h5 className="story-headline">Progress</h5>
+                      <Progress multi className="donation-progress">
+                        <Progress bar value={`${othersContribution}`} />
+                        <Progress
+                          bar
+                          className="you"
+                          color="success"
+                          value={`${userContribution}`}
+                        />
+                      </Progress>
+                      <div className="key">
+                        <Badge color="primary" className="others">
+                          Others
+                        </Badge>
+                        <Badge color="success" className="you">
+                          You
+                        </Badge>
+                      </div>
+                      {/* {`$${commaNumber(amountToCompletion)}`} */}
 
-                  <Card>
-                    <CardBody>
-                      <CardTitle>
-                        You've donated {`$${commaNumber(amountDonatedByUser)}`}{' '}
-                        to {fullName}
-                      </CardTitle>
-                    </CardBody>
-                  </Card>
+                      <h5 className="story-headline">Activity Feed</h5>
+
+                      <Card className="donation-card you">
+                        <CardBody>
+                          <FiThumbsUp color="#fff" size={36} />
+                          <span>
+                            You've donated{' '}
+                            {`$${commaNumber(amountDonatedByUser)}`} to{' '}
+                            {firstName}
+                          </span>
+                        </CardBody>
+                      </Card>
+
+                      <Card className="donation-card other">
+                        <CardBody>
+                          <FiUserCheck color="#009cb8" size={36} />
+                          <span>
+                            Jake donated {`$${commaNumber(985)}`} to {firstName}
+                          </span>
+                        </CardBody>
+                      </Card>
+                    </React.Fragment>
+                  ) : (
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        flexDirection: 'column',
+                      }}
+                    >
+                      <FiAlertCircle color="#0057b8" size={36} />
+                      <h3 className="update-warning">
+                        In order to see updates, you must first sponsor{' '}
+                        {firstName}
+                      </h3>
+                    </div>
+                  )}
                 </Col>
               </Row>
             </TabPane>
             <TabPane tabId="3">
               <Row>
-                <Col />
+                <Col>
+                  <div className="wish-container">
+                    <FiStar color="#0057b8" size={36} />
+                    <p className="wish">{wish}</p>
+                  </div>
+                </Col>
               </Row>
             </TabPane>
           </TabContent>
         </Container>
-        <Button id="sponsor-btn" color="secondary">
-          Sponsor
-        </Button>
+        <div className="btn-container">
+          <Button
+            id="back-btn"
+            color="secondary"
+            onClick={() => this.props.history.goBack()}
+          >
+            <FiArrowLeft />
+          </Button>
+
+          <Button
+            id="sponsor-btn"
+            className="gradient"
+            color="secondary"
+            disabled={isSponsored}
+            onClick={() => this.props.history.push(`/sponsor/${childId}`)}
+          >
+            {isSponsored ? 'Already Sponsoring' : `Sponsor ${firstName} Now`}
+          </Button>
+        </div>
       </React.Fragment>
     );
   }

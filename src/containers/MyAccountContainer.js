@@ -15,6 +15,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withSnackbar } from 'notistack';
 import commaNumber from 'comma-number';
+import { truncateDecimal } from '../utils/helpers';
 
 import Cards from 'react-credit-cards';
 import 'react-credit-cards/lib/styles.scss';
@@ -24,6 +25,13 @@ import 'react-credit-cards/lib/styles.scss';
 // import walmart from '../img/walmart.png';
 
 const listOfTransactions = [
+  {
+    // logo: target,
+    purchase: 'Donation',
+    date: '12/27',
+    amount: 345,
+    donation: 345,
+  },
   {
     // logo: target,
     purchase: 'Target',
@@ -70,18 +78,26 @@ class MyAccountContainer extends Component {
               focused="number"
             />
 
-            <Button color="secondary">Add</Button>
-            <Button color="secondary">Remove</Button>
+            <div className="btn-container-account">
+              <Button color="success" size="sm">
+                Add Payment Method
+              </Button>
+              <Button color="danger" size="sm">
+                Remove
+              </Button>
+            </div>
 
-            <Card>
+            <Card className="total-donations-card">
               <CardBody>
                 <CardTitle>Total Donations</CardTitle>
 
-                <h2>{`$${commaNumber(totalDonationAmount)}`}</h2>
+                <h2>{`$${commaNumber(
+                  truncateDecimal(totalDonationAmount),
+                )}`}</h2>
               </CardBody>
             </Card>
 
-            <Card>
+            <Card className="recent-donations-card">
               <CardBody>
                 <CardTitle>Recent Donations</CardTitle>
                 <div className="transaction-row transaction-header">
@@ -91,7 +107,7 @@ class MyAccountContainer extends Component {
                       src={t.logo}
                     /> */}
                   <div className="transaction-purchase">Transaction</div>
-                  <div className="transaction-date">Date</div>
+
                   <div className="transaction-amount">Amount</div>
                   <div className="transaction-donation">Donation</div>
                 </div>
@@ -102,8 +118,11 @@ class MyAccountContainer extends Component {
                       alt={t.purchase}
                       src={t.logo}
                     /> */}
-                    <div className="transaction-purchase">{t.purchase}</div>
-                    <div className="transaction-date">{t.date}</div>
+                    <div className="transaction-purchase">
+                      {t.purchase}
+                      <span className="transaction-date">{t.date}</span>
+                    </div>
+
                     <div className="transaction-amount">
                       ${commaNumber(t.amount)}
                     </div>

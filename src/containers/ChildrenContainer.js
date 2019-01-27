@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withSnackbar } from 'notistack';
 
-import ChildForm from '../components/ChildForm';
+import ChildRow from '../components/ChildRow';
 
 import {
   createChildren,
@@ -17,7 +17,10 @@ import {
   DELETE_CHILD_SUCCESS,
 } from '../actions/child';
 
-import { MALE, FEMALE } from '../utils/constants';
+import {
+  // MALE,
+  FEMALE,
+} from '../utils/constants';
 
 const initChild = () => ({
   _id: uuidv4(),
@@ -132,85 +135,10 @@ class ChildrenContainer extends Component {
       <Container fluid className="child-container">
         <Row>
           <Col>
-            <h2>Child Container</h2>
-
-            <Form
-              onSubmit={e => {
-                e.preventDefault();
-
-                this.createChildren();
-              }}
-            >
-              <Button type="submit" color="success" size="lg">
-                Create Children
-              </Button>
-
-              {Array.isArray(this.state.children) &&
-                this.state.children.map(c => {
-                  return (
-                    <ChildForm
-                      key={c._id}
-                      child={c}
-                      editChild={this.editChild}
-                      MALE={MALE}
-                      FEMALE={FEMALE}
-                    />
-                  );
-                })}
-            </Form>
-            <Button
-              color="primary"
-              size="lg"
-              onClick={() => this.addChildForm()}
-            >
-              + Add Another Form
-            </Button>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <Table>
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>First Name</th>
-                  <th>Last Name</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {Array.isArray(this.props.child) &&
-                  this.props.child.map((c, i) => (
-                    <tr
-                      key={c._id}
-                      onClick={e => {
-                        e.preventDefault();
-                        e.stopPropagation();
-
-                        this.props.history.push(`/child/${c._id}`);
-                      }}
-                    >
-                      <th scope="row">{i + 1}</th>
-                      <td>{c.firstName}</td>
-                      <td>{c.lastName}</td>
-                      <td>
-                        <Button
-                          size="sm"
-                          color="danger"
-                          onClick={e => {
-                            e.preventDefault();
-                            e.stopPropagation();
-
-                            this.deleteChild(c._id);
-                          }}
-                        >
-                          Delete
-                        </Button>
-                      </td>
-                    </tr>
-                  ))}
-              </tbody>
-            </Table>
+            {Array.isArray(this.props.child) &&
+              this.props.child.map((c, i) => (
+                <ChildRow key={c._id} child={c} history={this.props.history} />
+              ))}
           </Col>
         </Row>
       </Container>
