@@ -98,14 +98,14 @@ class SponsorContainer extends Component {
 
     const {
       firstName,
-      lastName,
-      age,
-      condition,
+      // lastName,
+      // age,
+      // condition,
       // gender,
-      wish,
-      story,
+      // wish,
+      // story,
       amountDonatedByUser,
-      amountDonatedByOthers,
+      // amountDonatedByOthers,
       amountToCompletion,
     } = selectedChild;
 

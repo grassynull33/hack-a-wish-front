@@ -62,7 +62,7 @@ class ChildContainer extends Component {
 
     const {
       firstName,
-      lastName,
+      // lastName,
       age,
       condition,
       // gender,

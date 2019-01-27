@@ -1,7 +1,12 @@
 /* eslint react/no-danger: 0 */
 import React, { Component } from 'react';
 import uuidv4 from 'uuid/v4';
-import { Container, Row, Col, Button, Form, Table } from 'reactstrap';
+import {
+  Container,
+  Row,
+  Col,
+  // Button, Form, Table
+} from 'reactstrap';
 import update from 'immutability-helper';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
