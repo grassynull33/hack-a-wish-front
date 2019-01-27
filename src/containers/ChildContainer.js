@@ -244,7 +244,6 @@ class ChildContainer extends Component {
 
           <Button
             id="sponsor-btn"
-            className="gradient"
             color="secondary"
             disabled={isSponsored}
             onClick={() => this.props.history.push(`/sponsor/${childId}`)}
